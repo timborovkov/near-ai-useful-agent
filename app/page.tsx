@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { useAgent } from "./hooks/useAgent";
+import { useAgent } from "@/hooks/use-agent";
 import ReactMarkdown from "react-markdown";
 
 export default function Home() {

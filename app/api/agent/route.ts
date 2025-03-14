@@ -1,4 +1,4 @@
-import { AgentRequest, AgentResponse } from "@/app/types/api";
+import { AgentRequest, AgentResponse } from "@/types/api";
 import {
   AgentKit,
   SOLANA_NETWORK_ID,
