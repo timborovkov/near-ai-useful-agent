@@ -7,8 +7,9 @@ import LayoutWrapper from '@/components/layout-wrapper';
 import Providers from '@/components/providers';
 
 export const metadata: Metadata = {
-  title: 'Data Classifier Agent',
-  description: '',
+  title: 'ZenLog AI - organise your data, find your zen',
+  description:
+    'AI-driven, blockchain-enabled to that catalogues and labels your digital assets.',
 };
 
 export default function RootLayout({
