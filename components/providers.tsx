@@ -1,6 +1,6 @@
 'use client';
 
-import { wagmiConfig } from '@/wagmi';
+import { wagmiConfig, wagmiConfigDev } from '@/wagmi';
 import { OnchainKitProvider } from '@coinbase/onchainkit';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { WagmiProvider } from 'wagmi';
@@ -14,7 +14,11 @@ export default function Providers({
   children: React.ReactNode;
 }>) {
   return (
-    <WagmiProvider config={wagmiConfig}>
+    <WagmiProvider
+      config={
+        process.env.NODE_ENV === 'production' ? wagmiConfig : wagmiConfigDev
+      }
+    >
       <QueryClientProvider client={queryClient}>
         <OnchainKitProvider
           config={{ appearance: { theme: 'base' } }}
