@@ -1,4 +1,8 @@
-import { useRouter } from 'next/router';
+'use client';
+
+import { useMemo } from 'react';
+
+import { usePathname } from 'next/navigation';
 
 import { AppSidebar } from '@/components/app-sidebar';
 import {
@@ -30,30 +34,34 @@ export default function LayoutWrapper({
 }: {
   children: React.ReactNode;
 }) {
-  const router = useRouter(); // Get the current router instance
-  const asPath = router.asPath; // Get the current path including query params
-  // Remove query parameters and hash fragments to isolate the pathname
-  const pathname = asPath.split('?')[0].split('#')[0];
+  const pathname = usePathname();
+
   // Split the pathname into segments and filter out any empty segments
-  const segments = pathname.split('/').filter(Boolean);
+  const segments = useMemo(
+    () => pathname.split('/').filter(Boolean),
+    [pathname]
+  );
 
   // Construct the breadcrumbs array:
   // - Always start with a "Home" breadcrumb.
   // - For each segment, build the breadcrumb link and label.
-  const breadcrumbs = [
-    { href: '/', label: 'Home', isLast: segments.length === 0 },
-    ...segments.map((segment, index) => {
-      // Build the href by joining the segments up to the current index
-      const href = '/' + segments.slice(0, index + 1).join('/');
-      // Determine if this is the last breadcrumb in the trail
-      const isLast = index === segments.length - 1;
-      // Format the segment to create a label (replace hyphens with spaces and capitalise first letter)
-      const label = segment
-        .replace(/-/g, ' ')
-        .replace(/^\w/, (c) => c.toUpperCase());
-      return { href, label, isLast };
-    }),
-  ];
+  const breadcrumbs = useMemo(
+    () => [
+      { href: '/', label: 'Home', isLast: segments.length === 0 },
+      ...segments.map((segment, index) => {
+        // Build the href by joining the segments up to the current index
+        const href = '/' + segments.slice(0, index + 1).join('/');
+        // Determine if this is the last breadcrumb in the trail
+        const isLast = index === segments.length - 1;
+        // Format the segment to create a label (replace hyphens with spaces and capitalise first letter)
+        const label = segment
+          .replace(/-/g, ' ')
+          .replace(/^\w/, (c) => c.toUpperCase());
+        return { href, label, isLast };
+      }),
+    ],
+    [segments]
+  );
 
   return (
     <SidebarProvider>
