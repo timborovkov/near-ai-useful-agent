@@ -15,6 +15,13 @@
     "^next$",
     "^next/(.*)$",
     "<THIRD_PARTY_MODULES>",
+    "^react-icons/(.*)$",
+    "^.*\\.css$",
+    "^@/lib/(.*)$",
+    "^@/components/(.*)$",
+    "^@/hooks/(.*)$",
+    "^@/utils/(.*)$",
+    "^@/types/(.*)$",
     "^[./]"
   ],
   "importOrderSeparation": true,
