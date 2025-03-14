@@ -1,22 +1,25 @@
-import { AgentRequest, AgentResponse } from "@/types/api";
+import { NextResponse } from 'next/server';
+
 import {
+  ActionProvider,
   AgentKit,
+  cdpApiActionProvider,
+  jupiterActionProvider,
   SOLANA_NETWORK_ID,
   SolanaKeypairWalletProvider,
   splActionProvider,
   walletActionProvider,
-  jupiterActionProvider,
-  cdpApiActionProvider,
-  ActionProvider,
-} from "@coinbase/agentkit";
-import { getLangChainTools } from "@coinbase/agentkit-langchain";
-import { MemorySaver } from "@langchain/langgraph";
-import { createReactAgent } from "@langchain/langgraph/prebuilt";
-import { ChatOpenAI } from "@langchain/openai";
-import { Keypair } from "@solana/web3.js";
-import bs58 from "bs58";
-import { NextResponse } from "next/server";
-import fs from "fs";
+} from '@coinbase/agentkit';
+import { getLangChainTools } from '@coinbase/agentkit-langchain';
+import { MemorySaver } from '@langchain/langgraph';
+import { createReactAgent } from '@langchain/langgraph/prebuilt';
+import { ChatOpenAI } from '@langchain/openai';
+import { Keypair } from '@solana/web3.js';
+import bs58 from 'bs58';
+import fs from 'fs';
+
+import { AgentRequest, AgentResponse } from '@/types/api';
+
 /**
  * AgentKit Integration Route
  *
@@ -56,7 +59,7 @@ import fs from "fs";
 let agent: ReturnType<typeof createReactAgent>;
 
 // Configure a file to persist a user's private key if none provided
-const WALLET_DATA_FILE = "wallet_data.txt";
+const WALLET_DATA_FILE = 'wallet_data.txt';
 
 /**
  * Initializes and returns an instance of the AI agent.
@@ -69,7 +72,9 @@ const WALLET_DATA_FILE = "wallet_data.txt";
  *
  * @throws {Error} If the agent initialization fails.
  */
-async function getOrInitializeAgent(): Promise<ReturnType<typeof createReactAgent>> {
+async function getOrInitializeAgent(): Promise<
+  ReturnType<typeof createReactAgent>
+> {
   // If agent has already been initialized, return it
   if (agent) {
     return agent;
@@ -77,21 +82,23 @@ async function getOrInitializeAgent(): Promise<ReturnType<typeof createReactAgen
 
   try {
     // Initialize LLM: https://platform.openai.com/docs/models#gpt-4o
-    const llm = new ChatOpenAI({ model: "gpt-4o-mini" });
+    const llm = new ChatOpenAI({ model: 'gpt-4o-mini' });
 
     // Setup Private Key
     let privateKey = process.env.SOLANA_PRIVATE_KEY as string;
     if (!privateKey) {
       if (fs.existsSync(WALLET_DATA_FILE)) {
-        privateKey = JSON.parse(fs.readFileSync(WALLET_DATA_FILE, "utf8")).privateKey;
-        console.info("Found private key in wallet_data.txt");
+        privateKey = JSON.parse(
+          fs.readFileSync(WALLET_DATA_FILE, 'utf8')
+        ).privateKey;
+        console.info('Found private key in wallet_data.txt');
       } else {
         const keypair = Keypair.generate();
         privateKey = bs58.encode(keypair.secretKey);
         fs.writeFileSync(WALLET_DATA_FILE, JSON.stringify({ privateKey }));
-        console.log("Created new private key and saved to wallet_data.txt");
+        console.log('Created new private key and saved to wallet_data.txt');
         console.log(
-          "We recommend you save this private key to your .env file and delete wallet_data.txt afterwards.",
+          'We recommend you save this private key to your .env file and delete wallet_data.txt afterwards.'
         );
       }
     }
@@ -101,10 +108,17 @@ async function getOrInitializeAgent(): Promise<ReturnType<typeof createReactAgen
     const rpcUrl = process.env.SOLANA_RPC_URL;
     let walletProvider: SolanaKeypairWalletProvider;
     if (rpcUrl) {
-      walletProvider = await SolanaKeypairWalletProvider.fromRpcUrl(rpcUrl, privateKey);
+      walletProvider = await SolanaKeypairWalletProvider.fromRpcUrl(
+        rpcUrl,
+        privateKey
+      );
     } else {
-      const network = (process.env.NETWORK_ID ?? "solana-devnet") as SOLANA_NETWORK_ID;
-      walletProvider = await SolanaKeypairWalletProvider.fromNetwork(network, privateKey);
+      const network = (process.env.NETWORK_ID ??
+        'solana-devnet') as SOLANA_NETWORK_ID;
+      walletProvider = await SolanaKeypairWalletProvider.fromNetwork(
+        network,
+        privateKey
+      );
     }
 
     // Initialize AgentKit: https://docs.cdp.coinbase.com/agentkit/docs/agent-actions
@@ -113,13 +127,14 @@ async function getOrInitializeAgent(): Promise<ReturnType<typeof createReactAgen
       splActionProvider(),
       jupiterActionProvider(),
     ];
-    const canUseCdpApi = process.env.CDP_API_KEY_ID && process.env.CDP_API_KEY_SECRET;
+    const canUseCdpApi =
+      process.env.CDP_API_KEY_ID && process.env.CDP_API_KEY_SECRET;
     if (canUseCdpApi) {
       actionProviders.push(
         cdpApiActionProvider({
           apiKeyName: process.env.CDP_API_KEY_ID,
           apiKeyPrivateKey: process.env.CDP_API_KEY_SECRET,
-        }),
+        })
       );
     }
     const agentkit = await AgentKit.from({
@@ -130,7 +145,8 @@ async function getOrInitializeAgent(): Promise<ReturnType<typeof createReactAgen
     const memory = new MemorySaver();
 
     // Initialize Agent
-    const canUseFaucet = walletProvider.getNetwork().networkId == "solana-devnet" && canUseCdpApi;
+    const canUseFaucet =
+      walletProvider.getNetwork().networkId == 'solana-devnet' && canUseCdpApi;
     const faucetMessage = `If you ever need funds, you can request them from the faucet.`;
     const cantUseFaucetMessage = `If you need funds, you can provide your wallet details and request funds from the user.`;
     agent = createReactAgent({
@@ -151,8 +167,8 @@ async function getOrInitializeAgent(): Promise<ReturnType<typeof createReactAgen
 
     return agent;
   } catch (error) {
-    console.error("Error initializing agent:", error);
-    throw new Error("Failed to initialize agent");
+    console.error('Error initializing agent:', error);
+    throw new Error('Failed to initialize agent');
   }
 }
 
@@ -174,7 +190,7 @@ async function getOrInitializeAgent(): Promise<ReturnType<typeof createReactAgen
  * });
  */
 export async function POST(
-  req: Request & { json: () => Promise<AgentRequest> },
+  req: Request & { json: () => Promise<AgentRequest> }
 ): Promise<NextResponse<AgentResponse>> {
   try {
     // 1️. Extract user message from the request body
@@ -185,14 +201,14 @@ export async function POST(
 
     // 3.Start streaming the agent's response
     const stream = await agent.stream(
-      { messages: [{ content: userMessage, role: "user" }] }, // The new message to send to the agent
-      { configurable: { thread_id: "AgentKit Discussion" } }, // Customizable thread ID for tracking conversations
+      { messages: [{ content: userMessage, role: 'user' }] }, // The new message to send to the agent
+      { configurable: { thread_id: 'AgentKit Discussion' } } // Customizable thread ID for tracking conversations
     );
 
     // 4️. Process the streamed response chunks into a single message
-    let agentResponse = "";
+    let agentResponse = '';
     for await (const chunk of stream) {
-      if ("agent" in chunk) {
+      if ('agent' in chunk) {
         agentResponse += chunk.agent.messages[0].content;
       }
     }
@@ -200,7 +216,7 @@ export async function POST(
     // 5️. Return the final response
     return NextResponse.json({ response: agentResponse });
   } catch (error) {
-    console.error("Error processing request:", error);
-    return NextResponse.json({ error: "Failed to process message" });
+    console.error('Error processing request:', error);
+    return NextResponse.json({ error: 'Failed to process message' });
   }
 }
