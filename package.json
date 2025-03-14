@@ -11,8 +11,11 @@
     "format:fix": "prettier --write ."
   },
   "dependencies": {
+    "@ai-sdk/openai": "^1.2.5",
     "@coinbase/agentkit": "^0.3.0",
     "@coinbase/agentkit-langchain": "^0.3.0",
+    "@coinbase/agentkit-vercel-ai-sdk": "^0.1.0",
+    "@coinbase/onchainkit": "^0.37.8",
     "@langchain/core": "^0.3.19",
     "@langchain/langgraph": "^0.2.21",
     "@langchain/openai": "^0.3.14",
@@ -21,12 +24,14 @@
     "@radix-ui/react-slot": "^1.1.2",
     "@radix-ui/react-tooltip": "^1.1.8",
     "@solana/web3.js": "^1.98.0",
-    "@tanstack/react-query": "^5",
+    "@tanstack/react-query": "^5.68.0",
+    "ai": "^4.1.61",
     "bs58": "^6.0.0",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "lucide-react": "^0.482.0",
     "next": "^15",
+    "pino-pretty": "^13.0.0",
     "react": "^19",
     "react-dom": "^19",
     "react-markdown": "^10.0.0",
@@ -36,16 +41,16 @@
     "wagmi": "^2.11.0"
   },
   "devDependencies": {
+    "@trivago/prettier-plugin-sort-imports": "^5.2.2",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
     "eslint": "^8",
     "eslint-config-next": "14.2.15",
     "postcss": "^8",
-    "tailwindcss": "^3.4.1",
-    "typescript": "^5",
-    "@trivago/prettier-plugin-sort-imports": "^5.2.2",
     "prettier": "^3.5.3",
-    "prettier-plugin-tailwindcss": "^0.6.11"
+    "prettier-plugin-tailwindcss": "^0.6.11",
+    "tailwindcss": "^3.4.1",
+    "typescript": "^5"
   }
 }
