@@ -13,13 +13,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className="bg-gray-100 dark:bg-gray-900 dark flex flex-col min-h-screen">
-
-        {/* Main Content (Dynamic, Grows but Doesn't Force Scroll) */}
+      <body className="flex flex-col min-h-screen">
         <main className="flex-grow flex items-center justify-center px-4">
           {children}
         </main>
-
       </body>
     </html>
   );
