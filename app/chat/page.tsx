@@ -6,7 +6,7 @@ import ReactMarkdown from 'react-markdown';
 
 import { useAgent } from '@/hooks/use-agent';
 
-export default function Chat() {
+export default function ChatPage() {
   const [input, setInput] = useState('');
   const { messages, sendMessage, isThinking } = useAgent();
 
