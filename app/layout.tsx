@@ -3,6 +3,7 @@ import type { Metadata } from 'next';
 import './globals.css';
 import '@coinbase/onchainkit/styles.css';
 
+import LayoutWrapper from '@/components/layout-wrapper';
 import Providers from '@/components/providers';
 
 export const metadata: Metadata = {
@@ -18,7 +19,9 @@ export default function RootLayout({
   return (
     <html lang='en'>
       <body className='flex min-h-screen flex-col'>
-        <Providers>{children}</Providers>
+        <Providers>
+          <LayoutWrapper>{children}</LayoutWrapper>
+        </Providers>
       </body>
     </html>
   );
