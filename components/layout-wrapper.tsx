@@ -14,6 +14,8 @@ import {
   SidebarTrigger,
 } from '@/components/ui/sidebar';
 
+import WalletButton from './wallet-button';
+
 export default function LayoutWrapper({
   children,
 }: {
@@ -23,7 +25,7 @@ export default function LayoutWrapper({
     <SidebarProvider>
       <AppSidebar />
       <SidebarInset>
-        <header className='flex h-16 shrink-0 items-center gap-2 border-b'>
+        <header className='flex h-16 shrink-0 items-center justify-between gap-2 border-b'>
           <div className='flex items-center gap-2 px-3'>
             <SidebarTrigger />
             <Separator orientation='vertical' className='mr-2 h-4' />
@@ -40,6 +42,9 @@ export default function LayoutWrapper({
                 </BreadcrumbItem>
               </BreadcrumbList>
             </Breadcrumb>
+          </div>
+          <div className='px-3'>
+            <WalletButton />
           </div>
         </header>
         <div className='flex flex-1 flex-col gap-4 p-4'>{children}</div>
