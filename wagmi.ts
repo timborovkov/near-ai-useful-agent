@@ -8,7 +8,7 @@ export const wagmiConfig = createConfig({
   chains: [base],
   connectors: [
     coinbaseWallet({
-      appName: 'onchain-commerce-template',
+      appName: 'zenlog-ai',
     }),
   ],
   ssr: true,
