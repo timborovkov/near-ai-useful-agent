@@ -113,12 +113,12 @@ async function getOrInitializeAgent(): Promise<ReturnType<typeof createReactAgen
       splActionProvider(),
       jupiterActionProvider(),
     ];
-    const canUseCdpApi = process.env.CDP_API_KEY_NAME && process.env.CDP_API_KEY_PRIVATE_KEY;
+    const canUseCdpApi = process.env.CDP_API_KEY_ID && process.env.CDP_API_KEY_SECRET;
     if (canUseCdpApi) {
       actionProviders.push(
         cdpApiActionProvider({
-          apiKeyName: process.env.CDP_API_KEY_NAME,
-          apiKeyPrivateKey: process.env.CDP_API_KEY_PRIVATE_KEY,
+          apiKeyName: process.env.CDP_API_KEY_ID,
+          apiKeyPrivateKey: process.env.CDP_API_KEY_SECRET,
         }),
       );
     }
