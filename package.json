@@ -11,8 +11,10 @@
     "format:fix": "prettier --write ."
   },
   "dependencies": {
+    "@ai-sdk/openai": "^1.2.5",
     "@coinbase/agentkit": "^0.3.0",
     "@coinbase/agentkit-langchain": "^0.3.0",
+    "@coinbase/agentkit-vercel-ai-sdk": "^0.1.0",
     "@coinbase/onchainkit": "^0.37.8",
     "@langchain/core": "^0.3.19",
     "@langchain/langgraph": "^0.2.21",
@@ -23,6 +25,7 @@
     "@radix-ui/react-tooltip": "^1.1.8",
     "@solana/web3.js": "^1.98.0",
     "@tanstack/react-query": "^5",
+    "ai": "^4.1.61",
     "bs58": "^6.0.0",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
