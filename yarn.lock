@@ -9,7 +9,7 @@
 
 "@adraffy/ens-normalize@^1.10.1":
   version "1.11.0"
-  resolved "https://registry.npmjs.org/@adraffy/ens-normalize/-/ens-normalize-1.11.0.tgz"
+  resolved "https://registry.yarnpkg.com/@adraffy/ens-normalize/-/ens-normalize-1.11.0.tgz#42cc67c5baa407ac25059fcd7d405cc5ecdb0c33"
   integrity sha512-/3DDPKHqqIqxUULp8yP4zODUY1i+2xvVWsv8A79xGWdCAG+8sb0hRh0Rk2QyOJUnnbyPUAZYcpBuRe3nS2OIUg==
 
 "@ai-sdk/openai@^1.2.5":
@@ -1954,7 +1954,7 @@
 
 "@scure/bip39@1.5.4", "@scure/bip39@^1.4.0":
   version "1.5.4"
-  resolved "https://registry.npmjs.org/@scure/bip39/-/bip39-1.5.4.tgz"
+  resolved "https://registry.yarnpkg.com/@scure/bip39/-/bip39-1.5.4.tgz#07fd920423aa671be4540d59bdd344cc1461db51"
   integrity sha512-TFM4ni0vKvCfBpohoh+/lY05i9gRbSwXWngAsF4CABQxoaOHijxuaZ2R6cStDQ5CHtHO9aGJTr4ksVJASRRyMA==
   dependencies:
     "@noble/hashes" "~1.7.1"
@@ -3169,7 +3169,7 @@ JSONStream@^1.3.5:
 
 abitype@1.0.8, abitype@^1.0.6:
   version "1.0.8"
-  resolved "https://registry.npmjs.org/abitype/-/abitype-1.0.8.tgz"
+  resolved "https://registry.yarnpkg.com/abitype/-/abitype-1.0.8.tgz#3554f28b2e9d6e9f35eb59878193eabd1b9f46ba"
   integrity sha512-ZeiI6h3GnW06uYDLx0etQtX/p8E24UaHHBj57RSjK7YBFe7iuVn07EDpOeP451D06sF27VOz9JJPlIKJmXgkEg==
 
 abort-controller@^3.0.0:
@@ -5527,7 +5527,7 @@ isomorphic-ws@^4.0.1:
 
 isows@1.0.6:
   version "1.0.6"
-  resolved "https://registry.npmjs.org/isows/-/isows-1.0.6.tgz"
+  resolved "https://registry.yarnpkg.com/isows/-/isows-1.0.6.tgz#0da29d706fa51551c663c627ace42769850f86e7"
   integrity sha512-lPHCayd40oW98/I0uvgaHKWCSvkzY27LjWLbtzOm64yQ+G3Q5npjjbdppU65iZXkK1Zt+kH9pfegli0AYfwYYw==
 
 iterator.prototype@^1.1.4:
@@ -6514,7 +6514,7 @@ ox@0.6.7:
 
 ox@0.6.9:
   version "0.6.9"
-  resolved "https://registry.npmjs.org/ox/-/ox-0.6.9.tgz"
+  resolved "https://registry.yarnpkg.com/ox/-/ox-0.6.9.tgz#da1ee04fa10de30c8d04c15bfb80fe58b1f554bd"
   integrity sha512-wi5ShvzE4eOcTwQVsIPdFr+8ycyX+5le/96iAJutaZAvCes1J0+RvpEPg5QDPDiaR0XQQAvZVl7AwqQcINuUug==
   dependencies:
     "@adraffy/ens-normalize" "^1.10.1"
@@ -8195,10 +8195,24 @@ viem@2.23.2:
     ox "0.6.7"
     ws "8.18.0"
 
-viem@^2.1.1, viem@^2.17.4, viem@^2.21.26, viem@^2.22.16, viem@^2.23.0:
+viem@^2.1.1, viem@^2.21.26, viem@^2.22.16, viem@^2.23.0:
   version "2.23.10"
   resolved "https://registry.npmjs.org/viem/-/viem-2.23.10.tgz"
   integrity sha512-va6Wde+v96PdfzdPEspCML1MjAqe+88O8BD+R9Kun/4s5KMUNcqfHbXdZP0ZZ2Zms80styvH2pDRAqCho6TqkA==
+  dependencies:
+    "@noble/curves" "1.8.1"
+    "@noble/hashes" "1.7.1"
+    "@scure/bip32" "1.6.2"
+    "@scure/bip39" "1.5.4"
+    abitype "1.0.8"
+    isows "1.0.6"
+    ox "0.6.9"
+    ws "8.18.1"
+
+viem@^2.17.4:
+  version "2.23.11"
+  resolved "https://registry.yarnpkg.com/viem/-/viem-2.23.11.tgz#c087a52f3c08a9cf4dadd4b273a1d30c62b249e2"
+  integrity sha512-yPkHJt4Vn88kLlrv8mrtVN54PW4vNLWRWDScf8SaHK2f44VlMk5IZbMJw4ycUoW9K9GUvCMrYuUa34MAcwYHIg==
   dependencies:
     "@noble/curves" "1.8.1"
     "@noble/hashes" "1.7.1"
