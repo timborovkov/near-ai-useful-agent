@@ -1,5 +1,7 @@
 import * as React from 'react';
 
+import { usePathname } from 'next/navigation';
+
 import { GalleryVerticalEnd } from 'lucide-react';
 
 import {
@@ -16,7 +18,6 @@ import {
   SidebarRail,
 } from '@/components/ui/sidebar';
 
-// This is sample data.
 const data = {
   navMain: [
     {
@@ -65,6 +66,8 @@ const data = {
 };
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+  const pathname = usePathname();
+  console.log(pathname);
   return (
     <Sidebar {...props}>
       <SidebarHeader>
@@ -88,7 +91,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           <SidebarMenu>
             {data.navMain.map((item) => (
               <SidebarMenuItem key={item.title}>
-                <SidebarMenuButton asChild>
+                <SidebarMenuButton asChild isActive={item.url === pathname}>
                   <a href={item.url} className='font-medium'>
                     {item.title}
                   </a>
@@ -97,7 +100,10 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                   <SidebarMenuSub>
                     {item.items.map((item) => (
                       <SidebarMenuSubItem key={item.title}>
-                        <SidebarMenuSubButton asChild isActive={item.isActive}>
+                        <SidebarMenuSubButton
+                          asChild
+                          isActive={item.url === pathname}
+                        >
                           <a href={item.url}>{item.title}</a>
                         </SidebarMenuSubButton>
                       </SidebarMenuSubItem>
