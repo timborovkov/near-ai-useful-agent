@@ -12,6 +12,8 @@
   },
   "dependencies": {
     "@ai-sdk/openai": "^1.2.5",
+    "@aws-sdk/client-s3": "^3.758.0",
+    "@aws-sdk/s3-request-presigner": "^3.758.0",
     "@coinbase/agentkit": "^0.3.0",
     "@coinbase/agentkit-langchain": "^0.3.0",
     "@coinbase/agentkit-vercel-ai-sdk": "^0.1.0",
