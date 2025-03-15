@@ -67,7 +67,6 @@ const data = {
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const pathname = usePathname();
-  console.log(pathname);
   return (
     <Sidebar {...props}>
       <SidebarHeader>

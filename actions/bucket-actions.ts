@@ -2,19 +2,7 @@
 
 import { revalidatePath } from 'next/cache';
 
-// Types
-export interface S3Bucket {
-  id: string;
-  name: string;
-  description?: string;
-  region: string;
-  endpoint?: string;
-  credentials: {
-    accessKeyId: string;
-    secretAccessKey: string;
-  };
-  createdAt: Date;
-}
+import { S3Bucket } from '@/types/bucket';
 
 /**
  * Disconnect an S3 bucket by ID
@@ -30,6 +18,7 @@ export async function disconnectBucket(
 
     // Simulating API latency
     await new Promise((resolve) => setTimeout(resolve, 1000));
+    console.log('Disconnected bucket:', bucketId);
 
     // Simulate success response
     revalidatePath('/buckets');

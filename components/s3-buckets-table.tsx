@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from 'react';
 
-import type { S3Bucket } from '@/actions/bucket-actions';
 import { Search } from 'lucide-react';
 
 import {
@@ -14,6 +13,8 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
+
+import { S3Bucket } from '@/types/bucket';
 
 import { AddBucketForm } from './buckets/add-bucket-form';
 import { BucketList } from './buckets/bucket-list';
@@ -111,7 +112,10 @@ export default function S3BucketsTable({
           <p className='text-sm text-muted-foreground'>
             Total buckets: {buckets.length}
           </p>
-          <AddBucketForm onBucketAdded={handleBucketAdded} />
+          <AddBucketForm
+            open={isAddingBucket}
+            onBucketAdded={handleBucketAdded}
+          />
         </CardFooter>
       </Card>
     </div>

@@ -4,7 +4,6 @@ import type React from 'react';
 import { useState } from 'react';
 
 import { addBucket } from '@/actions/bucket-actions';
-import type { S3Bucket } from '@/actions/bucket-actions';
 import { Eye, EyeOff, Loader2, Plus } from 'lucide-react';
 import { toast } from 'sonner';
 
@@ -22,12 +21,15 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 
+import { S3Bucket } from '@/types/bucket';
+
 interface AddBucketFormProps {
+  open: boolean;
   onBucketAdded: (bucket: S3Bucket) => void;
 }
 
-export function AddBucketForm({ onBucketAdded }: AddBucketFormProps) {
-  const [isOpen, setIsOpen] = useState(false);
+export function AddBucketForm({ open, onBucketAdded }: AddBucketFormProps) {
+  const [isOpen, setIsOpen] = useState(open);
   const [isLoading, setIsLoading] = useState(false);
   const [showSecretKey, setShowSecretKey] = useState(false);
 
@@ -36,7 +38,11 @@ export function AddBucketForm({ onBucketAdded }: AddBucketFormProps) {
     setIsLoading(true);
 
     try {
-      const formData = new FormData(event.currentTarget);
+      const target = event.currentTarget;
+      if (!target) {
+        throw new Error('Form target not found');
+      }
+      const formData = new FormData(target);
       const result = await addBucket(formData);
 
       if (result.success && result.bucket) {
@@ -47,7 +53,7 @@ export function AddBucketForm({ onBucketAdded }: AddBucketFormProps) {
             'The bucket has been successfully connected to your application.',
         });
         // Reset form
-        event.currentTarget.reset();
+        target.reset();
       } else {
         toast.error('Failed to connect bucket', {
           description: result.message || 'An unexpected error occurred.',
