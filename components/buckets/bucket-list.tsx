@@ -1,9 +1,19 @@
-"use client"
+'use client';
 
-import { useState } from "react"
-import { FolderOpen, Link2Off, Loader2, Trash2, Globe, Key, Calendar } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
+import { useState } from 'react';
+
+import { disconnectBucket } from '@/actions/bucket-actions';
+import type { S3Bucket } from '@/actions/bucket-actions';
+import {
+  Calendar,
+  FolderOpen,
+  Globe,
+  Key,
+  Link2Off,
+  Loader2,
+  Trash2,
+} from 'lucide-react';
+
 import {
   AlertDialog,
   AlertDialogAction,
@@ -14,102 +24,123 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from "@/components/ui/alert-dialog"
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
-import { useToast } from "@/hooks/use-toast"
-import { BrowseBucketDialog } from "./browse-bucket-dialog"
-import { disconnectBucket } from "@/actions/bucket-actions"
-import type { S3Bucket } from "@/actions/bucket-actions"
+} from '@/components/ui/alert-dialog';
+import { Button } from '@/components/ui/button';
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@/components/ui/table';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '@/components/ui/tooltip';
+
+import { useToast } from '@/hooks/use-toast';
+
+import { BrowseBucketDialog } from './browse-bucket-dialog';
 
 interface BucketListProps {
-  buckets: S3Bucket[]
-  onBucketDisconnected: (bucketId: string) => void
+  buckets: S3Bucket[];
+  onBucketDisconnected: (bucketId: string) => void;
 }
 
 export function BucketList({ buckets, onBucketDisconnected }: BucketListProps) {
-  const { toast } = useToast()
-  const [selectedBucket, setSelectedBucket] = useState<S3Bucket | null>(null)
-  const [isBrowsingBucket, setIsBrowsingBucket] = useState(false)
-  const [isLoading, setIsLoading] = useState(false)
+  const { toast } = useToast();
+  const [selectedBucket, setSelectedBucket] = useState<S3Bucket | null>(null);
+  const [isBrowsingBucket, setIsBrowsingBucket] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleDisconnectBucket = async (bucketId: string) => {
-    setIsLoading(true)
+    setIsLoading(true);
     try {
-      const result = await disconnectBucket(bucketId)
+      const result = await disconnectBucket(bucketId);
 
       if (result.success) {
-        onBucketDisconnected(bucketId)
+        onBucketDisconnected(bucketId);
         toast({
-          title: "Bucket disconnected",
-          description: "The bucket has been successfully disconnected.",
-        })
+          title: 'Bucket disconnected',
+          description: 'The bucket has been successfully disconnected.',
+        });
       } else {
         toast({
-          title: "Failed to disconnect bucket",
-          description: result.message || "An unexpected error occurred.",
-          variant: "destructive",
-        })
+          title: 'Failed to disconnect bucket',
+          description: result.message || 'An unexpected error occurred.',
+          variant: 'destructive',
+        });
       }
     } catch (error) {
       toast({
-        title: "Error",
-        description: "An unexpected error occurred while disconnecting the bucket.",
-        variant: "destructive",
-      })
+        title: 'Error',
+        description:
+          'An unexpected error occurred while disconnecting the bucket.',
+        variant: 'destructive',
+      });
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
-  }
+  };
 
   // Function to mask sensitive information
   const maskString = (str: string) => {
-    if (!str) return ""
-    if (str.length <= 8) return "••••••••"
-    return str.substring(0, 4) + "••••••" + str.substring(str.length - 4)
-  }
+    if (!str) return '';
+    if (str.length <= 8) return '••••••••';
+    return str.substring(0, 4) + '••••••' + str.substring(str.length - 4);
+  };
 
   // Function to format date
   const formatDate = (date: Date) => {
-    return new Intl.DateTimeFormat("en-US", {
-      year: "numeric",
-      month: "short",
-      day: "numeric",
-      hour: "2-digit",
-      minute: "2-digit",
-    }).format(date)
-  }
+    return new Intl.DateTimeFormat('en-US', {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+    }).format(date);
+  };
 
   return (
-    <div className="rounded-md border">
+    <div className='rounded-md border'>
       <Table>
         <TableHeader>
           <TableRow>
             <TableHead>Bucket Name</TableHead>
-            <TableHead className="hidden md:table-cell">Region</TableHead>
-            <TableHead className="hidden md:table-cell">Endpoint</TableHead>
-            <TableHead className="hidden md:table-cell">Credentials</TableHead>
-            <TableHead className="hidden lg:table-cell">Created</TableHead>
-            <TableHead className="text-right">Actions</TableHead>
+            <TableHead className='hidden md:table-cell'>Region</TableHead>
+            <TableHead className='hidden md:table-cell'>Endpoint</TableHead>
+            <TableHead className='hidden md:table-cell'>Credentials</TableHead>
+            <TableHead className='hidden lg:table-cell'>Created</TableHead>
+            <TableHead className='text-right'>Actions</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
           {buckets.map((bucket) => (
             <TableRow key={bucket.id}>
-              <TableCell className="font-medium">
+              <TableCell className='font-medium'>
                 <div>
                   {bucket.name}
-                  {bucket.description && <p className="text-xs text-muted-foreground mt-1">{bucket.description}</p>}
+                  {bucket.description && (
+                    <p className='mt-1 text-xs text-muted-foreground'>
+                      {bucket.description}
+                    </p>
+                  )}
                 </div>
               </TableCell>
-              <TableCell className="hidden md:table-cell">{bucket.region}</TableCell>
-              <TableCell className="hidden md:table-cell">
+              <TableCell className='hidden md:table-cell'>
+                {bucket.region}
+              </TableCell>
+              <TableCell className='hidden md:table-cell'>
                 {bucket.endpoint ? (
                   <TooltipProvider>
                     <Tooltip>
                       <TooltipTrigger asChild>
-                        <div className="flex items-center">
-                          <Globe className="h-4 w-4 mr-1 text-muted-foreground" />
-                          <span className="truncate max-w-[150px]">Custom</span>
+                        <div className='flex items-center'>
+                          <Globe className='mr-1 h-4 w-4 text-muted-foreground' />
+                          <span className='max-w-[150px] truncate'>Custom</span>
                         </div>
                       </TooltipTrigger>
                       <TooltipContent>
@@ -118,31 +149,39 @@ export function BucketList({ buckets, onBucketDisconnected }: BucketListProps) {
                     </Tooltip>
                   </TooltipProvider>
                 ) : (
-                  <span className="text-muted-foreground">Default</span>
+                  <span className='text-muted-foreground'>Default</span>
                 )}
               </TableCell>
-              <TableCell className="hidden md:table-cell">
+              <TableCell className='hidden md:table-cell'>
                 <TooltipProvider>
                   <Tooltip>
                     <TooltipTrigger asChild>
-                      <div className="flex items-center">
-                        <Key className="h-4 w-4 mr-1 text-muted-foreground" />
-                        <span>{maskString(bucket.credentials.accessKeyId)}</span>
+                      <div className='flex items-center'>
+                        <Key className='mr-1 h-4 w-4 text-muted-foreground' />
+                        <span>
+                          {maskString(bucket.credentials.accessKeyId)}
+                        </span>
                       </div>
                     </TooltipTrigger>
                     <TooltipContent>
-                      <p>Access Key ID: {maskString(bucket.credentials.accessKeyId)}</p>
-                      <p>Secret Access Key: {maskString(bucket.credentials.secretAccessKey)}</p>
+                      <p>
+                        Access Key ID:{' '}
+                        {maskString(bucket.credentials.accessKeyId)}
+                      </p>
+                      <p>
+                        Secret Access Key:{' '}
+                        {maskString(bucket.credentials.secretAccessKey)}
+                      </p>
                     </TooltipContent>
                   </Tooltip>
                 </TooltipProvider>
               </TableCell>
-              <TableCell className="hidden lg:table-cell">
+              <TableCell className='hidden lg:table-cell'>
                 <TooltipProvider>
                   <Tooltip>
                     <TooltipTrigger asChild>
-                      <div className="flex items-center">
-                        <Calendar className="h-4 w-4 mr-1 text-muted-foreground" />
+                      <div className='flex items-center'>
+                        <Calendar className='mr-1 h-4 w-4 text-muted-foreground' />
                         <span>{formatDate(bucket.createdAt)}</span>
                       </div>
                     </TooltipTrigger>
@@ -152,50 +191,53 @@ export function BucketList({ buckets, onBucketDisconnected }: BucketListProps) {
                   </Tooltip>
                 </TooltipProvider>
               </TableCell>
-              <TableCell className="text-right">
-                <div className="flex justify-end gap-2">
+              <TableCell className='text-right'>
+                <div className='flex justify-end gap-2'>
                   <Button
-                    variant="outline"
-                    size="sm"
+                    variant='outline'
+                    size='sm'
                     onClick={() => {
-                      setSelectedBucket(bucket)
-                      setIsBrowsingBucket(true)
+                      setSelectedBucket(bucket);
+                      setIsBrowsingBucket(true);
                     }}
                   >
-                    <FolderOpen className="h-4 w-4 mr-1" />
-                    <span className="hidden sm:inline">Browse</span>
+                    <FolderOpen className='mr-1 h-4 w-4' />
+                    <span className='hidden sm:inline'>Browse</span>
                   </Button>
 
                   <AlertDialog>
                     <AlertDialogTrigger asChild>
                       <Button
-                        variant="outline"
-                        size="sm"
-                        className="text-muted-foreground hover:text-destructive hover:border-destructive/50"
+                        variant='outline'
+                        size='sm'
+                        className='text-muted-foreground hover:border-destructive/50 hover:text-destructive'
                       >
-                        <Link2Off className="h-4 w-4 mr-1" />
-                        <span className="hidden sm:inline">Disconnect</span>
+                        <Link2Off className='mr-1 h-4 w-4' />
+                        <span className='hidden sm:inline'>Disconnect</span>
                       </Button>
                     </AlertDialogTrigger>
                     <AlertDialogContent>
                       <AlertDialogHeader>
-                        <AlertDialogTitle>Disconnect S3 Bucket</AlertDialogTitle>
+                        <AlertDialogTitle>
+                          Disconnect S3 Bucket
+                        </AlertDialogTitle>
                         <AlertDialogDescription>
-                          Are you sure you want to disconnect the bucket "{bucket.name}"? This will remove the
-                          connection to this bucket from your application. The bucket and its contents on AWS will not
-                          be affected.
+                          Are you sure you want to disconnect the bucket "
+                          {bucket.name}"? This will remove the connection to
+                          this bucket from your application. The bucket and its
+                          contents on AWS will not be affected.
                         </AlertDialogDescription>
                       </AlertDialogHeader>
                       <AlertDialogFooter>
                         <AlertDialogCancel>Cancel</AlertDialogCancel>
                         <AlertDialogAction
                           onClick={() => handleDisconnectBucket(bucket.id)}
-                          className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                          className='bg-destructive text-destructive-foreground hover:bg-destructive/90'
                         >
                           {isLoading ? (
-                            <Loader2 className="h-4 w-4 animate-spin mr-1" />
+                            <Loader2 className='mr-1 h-4 w-4 animate-spin' />
                           ) : (
-                            <Trash2 className="h-4 w-4 mr-1" />
+                            <Trash2 className='mr-1 h-4 w-4' />
                           )}
                           Disconnect
                         </AlertDialogAction>
@@ -213,11 +255,10 @@ export function BucketList({ buckets, onBucketDisconnected }: BucketListProps) {
         bucket={selectedBucket}
         isOpen={isBrowsingBucket}
         onOpenChange={(open) => {
-          setIsBrowsingBucket(open)
-          if (!open) setSelectedBucket(null)
+          setIsBrowsingBucket(open);
+          if (!open) setSelectedBucket(null);
         }}
       />
     </div>
-  )
+  );
 }
-
