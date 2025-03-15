@@ -46,7 +46,7 @@ export default function S3BucketsTable({
         buckets.filter(
           (bucket) =>
             bucket.name.toLowerCase().includes(query) ||
-            bucket.description.toLowerCase().includes(query) ||
+            bucket.description?.toLowerCase().includes(query) ||
             bucket.region.toLowerCase().includes(query)
         )
       );
