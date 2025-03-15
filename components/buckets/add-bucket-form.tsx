@@ -6,6 +6,7 @@ import { useState } from 'react';
 import { addBucket } from '@/actions/bucket-actions';
 import type { S3Bucket } from '@/actions/bucket-actions';
 import { Eye, EyeOff, Loader2, Plus } from 'lucide-react';
+import { toast } from 'sonner';
 
 import { Button } from '@/components/ui/button';
 import {
@@ -21,14 +22,11 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 
-import { useToast } from '@/hooks/use-toast';
-
 interface AddBucketFormProps {
   onBucketAdded: (bucket: S3Bucket) => void;
 }
 
 export function AddBucketForm({ onBucketAdded }: AddBucketFormProps) {
-  const { toast } = useToast();
   const [isOpen, setIsOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [showSecretKey, setShowSecretKey] = useState(false);
@@ -44,26 +42,22 @@ export function AddBucketForm({ onBucketAdded }: AddBucketFormProps) {
       if (result.success && result.bucket) {
         onBucketAdded(result.bucket);
         setIsOpen(false);
-        toast({
-          title: 'Bucket connected',
+        toast.success('Bucket connected', {
           description:
             'The bucket has been successfully connected to your application.',
         });
         // Reset form
         event.currentTarget.reset();
       } else {
-        toast({
-          title: 'Failed to connect bucket',
+        toast.error('Failed to connect bucket', {
           description: result.message || 'An unexpected error occurred.',
-          variant: 'destructive',
         });
       }
     } catch (error) {
-      toast({
-        title: 'Error',
+      console.error('Failed to connect bucket:', error);
+      toast.error('Error', {
         description:
           'An unexpected error occurred while connecting the bucket.',
-        variant: 'destructive',
       });
     } finally {
       setIsLoading(false);

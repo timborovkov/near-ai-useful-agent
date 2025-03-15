@@ -13,6 +13,7 @@ import {
   Loader2,
   Trash2,
 } from 'lucide-react';
+import { toast } from 'sonner';
 
 import {
   AlertDialog,
@@ -41,8 +42,6 @@ import {
   TooltipTrigger,
 } from '@/components/ui/tooltip';
 
-import { useToast } from '@/hooks/use-toast';
-
 import { BrowseBucketDialog } from './browse-bucket-dialog';
 
 interface BucketListProps {
@@ -51,7 +50,6 @@ interface BucketListProps {
 }
 
 export function BucketList({ buckets, onBucketDisconnected }: BucketListProps) {
-  const { toast } = useToast();
   const [selectedBucket, setSelectedBucket] = useState<S3Bucket | null>(null);
   const [isBrowsingBucket, setIsBrowsingBucket] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -63,23 +61,19 @@ export function BucketList({ buckets, onBucketDisconnected }: BucketListProps) {
 
       if (result.success) {
         onBucketDisconnected(bucketId);
-        toast({
-          title: 'Bucket disconnected',
+        toast.success('Bucket disconnected', {
           description: 'The bucket has been successfully disconnected.',
         });
       } else {
-        toast({
-          title: 'Failed to disconnect bucket',
+        toast.error('Failed to disconnect bucket', {
           description: result.message || 'An unexpected error occurred.',
-          variant: 'destructive',
         });
       }
     } catch (error) {
-      toast({
-        title: 'Error',
+      console.error('Failed to disconnect bucket:', error);
+      toast.error('Error', {
         description:
           'An unexpected error occurred while disconnecting the bucket.',
-        variant: 'destructive',
       });
     } finally {
       setIsLoading(false);
@@ -222,10 +216,11 @@ export function BucketList({ buckets, onBucketDisconnected }: BucketListProps) {
                           Disconnect S3 Bucket
                         </AlertDialogTitle>
                         <AlertDialogDescription>
-                          Are you sure you want to disconnect the bucket "
-                          {bucket.name}"? This will remove the connection to
-                          this bucket from your application. The bucket and its
-                          contents on AWS will not be affected.
+                          {`
+                          Are you sure you want to disconnect the bucket "${bucket.name}"? 
+                          This will remove the connection to this bucket from your application. \n
+                          The bucket and its contents on AWS will not be affected.
+                          `}
                         </AlertDialogDescription>
                       </AlertDialogHeader>
                       <AlertDialogFooter>
