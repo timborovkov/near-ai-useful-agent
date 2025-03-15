@@ -44,13 +44,12 @@ const data = {
       url: '#',
       items: [
         {
-          title: 'About',
+          title: 'About us',
           url: '#',
         },
         {
-          title: 'Contact',
+          title: 'Contact us',
           url: '#',
-          isActive: true,
         },
         {
           title: 'How to use?',
@@ -58,10 +57,6 @@ const data = {
         },
         {
           title: 'Github',
-          url: '#',
-        },
-        {
-          title: 'Twitter / X',
           url: '#',
         },
       ],
