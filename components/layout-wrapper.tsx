@@ -20,6 +20,7 @@ import {
   SidebarTrigger,
 } from '@/components/ui/sidebar';
 
+import { ThemeToggle } from './theme-toggle';
 import WalletButton from './wallet-button';
 
 /**
@@ -89,6 +90,7 @@ export default function LayoutWrapper({
                 ))}
               </BreadcrumbList>
             </Breadcrumb>
+            <ThemeToggle />
           </div>
           <div className='px-3'>
             <WalletButton />

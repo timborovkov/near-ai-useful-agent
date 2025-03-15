@@ -1,6 +1,7 @@
-import { openai } from "@ai-sdk/openai";
-import { getVercelAITools } from "@coinbase/agentkit-vercel-ai-sdk";
-import { prepareAgentkitAndWalletProvider } from "./prepare-agentkit";
+import { openai } from '@ai-sdk/openai';
+import { getVercelAITools } from '@coinbase/agentkit-vercel-ai-sdk';
+
+import { prepareAgentkitAndWalletProvider } from './prepare-agentkit';
 
 /**
  * Agent Configuration Guide
@@ -46,12 +47,14 @@ export async function createAgent(): Promise<Agent> {
 
   try {
     // Initialize LLM: https://platform.openai.com/docs/models#gpt-4o
-    const model = openai("gpt-4o-mini");
+    const model = openai('gpt-4o-mini');
 
-    const { agentkit, walletProvider } = await prepareAgentkitAndWalletProvider();
+    const { agentkit, walletProvider } =
+      await prepareAgentkitAndWalletProvider();
 
     // Initialize Agent
-    const canUseFaucet = walletProvider.getNetwork().networkId == "base-sepolia";
+    const canUseFaucet =
+      walletProvider.getNetwork().networkId == 'base-sepolia';
     const faucetMessage = `If you ever need funds, you can request them from the faucet.`;
     const cantUseFaucetMessage = `If you need funds, you can provide your wallet details and request funds from the user.`;
     const system = `
@@ -75,7 +78,7 @@ export async function createAgent(): Promise<Agent> {
 
     return agent;
   } catch (error) {
-    console.error("Error initializing agent:", error);
-    throw new Error("Failed to initialize agent");
+    console.error('Error initializing agent:', error);
+    throw new Error('Failed to initialize agent');
   }
 }
